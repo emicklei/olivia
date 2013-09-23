@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"github.com/SlyMarbo/rss"
 	"github.com/emicklei/go-restful"
 	"github.com/emicklei/renderbee"
 	"html/template"
-	"io"
 	"net/http"
 )
 
@@ -15,12 +15,24 @@ func (p PageService) getNU_Algemeen(req *restful.Request, resp *restful.Response
 		resp.WriteErrorString(http.StatusInternalServerError, err.Error())
 		return
 	}
-	nufeed := &NUFeed{feed}
-	nupage := renderbee.NewContainer(NUPage_Template)
-	nupage.Add("NUFeed", nufeed)
-	canvas := &renderbee.HtmlCanvas{resp.ResponseWriter} // NewHtmlCanvas ?
+	feedFragment := renderbee.NewFragment(feed, NUFeed_Template)
+	nupage := renderbee.NewFragmentMap(NUPage_Template)
+	nupage.Add("NUFeed", feedFragment)
+
+	canvas := renderbee.NewHtmlCanvas(resp.ResponseWriter)
 	canvas.Render(nupage)
 }
+
+var NUFeed_Template = template.Must(template.New("NUFeed").Parse(`
+<div class="items">
+	{{range .Items}}
+	<div class="item">
+		<h3>{{.Title}}</h3>
+		<h6>{{.Date}}</h6>
+		<p>{{.Content}}</p>
+	</div>
+	{{end}}
+</div>`))
 
 var NUPage_Template = template.Must(template.New("NUPage").Parse(`
 <html>
@@ -29,11 +41,3 @@ var NUPage_Template = template.Must(template.New("NUPage").Parse(`
 </body>
 </html>
 `))
-
-type NUFeed struct {
-	Feed *rss.Feed
-}
-
-func (f NUFeed) RenderOn(hc *renderbee.HtmlCanvas) {
-	io.WriteString(hc, "some items")
-}

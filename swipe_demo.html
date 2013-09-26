@@ -1,0 +1,52 @@
+<html>
+<head>
+  <link rel="stylesheet" href="idangerous.swiper.css">
+  <script defer src="idangerous.swiper-2.2.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="swiper-container">
+  <div class="swiper-wrapper">
+      <!--First Slide-->
+      <div class="swiper-slide" style="background-color:#da2"> 
+        <h1>first</h2>
+      </div>
+      
+      <!--Second Slide-->
+      <div class="swiper-slide" style="background-color:#a32">
+        <h1>second</h2>
+      </div>
+      
+      <!--Third Slide-->
+      <div class="swiper-slide" style="background-color:#efe"> 
+        <h1>third</h2>
+		<a href="javascript:mySwiper.swipePrev();">prev</a>
+		<a href="javascript:mySwiper.swipeNext();">next</a>
+		<a href="javascript:showMore();">more</a>
+      </div>
+      <!--Etc..-->
+  </div>
+</div>
+
+<script type="text/javascript">
+window.onload = function() {
+  // var 
+  mySwiper = new Swiper('.swiper-container',{
+    //Your options here:
+    mode:'horizontal',
+    loop: true
+    //etc..
+  });  
+}
+
+function showMore(){
+	var more = mySwiper.createSlide('<div id="more"/>');
+	more.append();
+	console.log($('#more'))
+	$('#more').load('more.html');
+}
+</script>
+
+</body>
+</html>

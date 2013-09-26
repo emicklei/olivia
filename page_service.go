@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/SlyMarbo/rss"
 	"github.com/emicklei/go-restful"
 	"github.com/emicklei/renderbee"
@@ -17,7 +16,7 @@ func (p PageService) getNU_Algemeen(req *restful.Request, resp *restful.Response
 	}
 	feedFragment := renderbee.NewFragment(feed, NUFeed_Template)
 	nupage := renderbee.NewFragmentMap(NUPage_Template)
-	nupage.Add("NUFeed", feedFragment)
+	nupage.Put("NUFeed", feedFragment)
 
 	canvas := renderbee.NewHtmlCanvas(resp.ResponseWriter)
 	canvas.Render(nupage)
